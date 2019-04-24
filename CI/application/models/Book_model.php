@@ -25,20 +25,20 @@ class Book_model extends CI_Model
     }
 
     public function get($barcode,$user_id){
-        $query = $this->db->get_where(TBL_BOOK_ACTION,array('barcode' => $barcode,'user_id' => $user_id));
+        $query = $this->db->get_where(TBL_BORROW,array('barcode' => $barcode,'user_id' => $user_id));
         return $query->row_array();
     }
 
     public function borrow($data){
-        return $this->db->insert(TBL_BOOK_ACTION,$data);
+        return $this->db->insert(TBL_BORROW,$data);
     }
 
     public function show_info($data){
-        $query = $this->db->get_where(TBL_BOOK_ACTION,$data);
+        $query = $this->db->get_where(TBL_BORROW,$data);
         return $query->result_array();
     }
 
-    public function give_back($data){
-        return $this->db->delete(TBL_BOOK_ACTION, $data);
+    public function give_back($id){
+        return $this->db->delete(TBL_BORROW,array('id' => $id));
     }
 }

@@ -27,13 +27,13 @@
             <form action="<?='/Secure/do_email_login';?>" method="post" id="form" novalidate>
                 <div class="field-group">
                     <div class="wthree-field">
-                        <input name="email" id="email" onblur="checkEmail();" type="text" placeholder="Email" required>
+                        <input name="email" id="email" type="text" placeholder="Email" required>
                     </div>
                     <span class="fa fa-envelope" aria-hidden="true"></span>
                 </div>
                 <div class="field-group">
                     <div class="wthree-field">
-                        <input name="password" id="myInput" onblur="checkPwd();" type="Password" placeholder="Password" required>
+                        <input name="password" id="myInput" type="Password" placeholder="Password" required>
                     </div>
                     <span class="fa fa-lock" aria-hidden="true"></span>
                 </div>
@@ -140,7 +140,6 @@
                 data : data,
                 success : function(data) {
                     if (data.code == 1) {
-                        alert(data.message);
                         window.location='/Secure/index';
                     } else {
                         alert(data.message);

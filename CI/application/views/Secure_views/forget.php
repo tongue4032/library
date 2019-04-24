@@ -31,7 +31,7 @@ Please enter your username or email to retrieve your password</p>
                     <div class="wthree-field-l">
                         <input name="captcha" id="captcha" type="text" placeholder="Verification Code" required>
                     </div>
-                        <img src="/Secure/captcha" alt="驗證碼" height="48" align="bottom" style="cursor:pointer;" onclick="this.src='<?='captcha/' . rand()?>'" />
+                        <img src="/Secure/captcha" alt="驗證碼" height="48" align="bottom" style="cursor:pointer;" onclick="this.src='<?='/Secure/captcha'?>?d='+Math.random();" />
                 </div>
 
                 <div class="wthree-field">
@@ -74,6 +74,11 @@ Please enter your username or email to retrieve your password</p>
                 form.email.focus();
                 return false;
             }
+            if (form.captcha.value == "") {
+                alert("Captcha cannot be empty!!");
+                form.captcha.focus();
+                return false;
+            }
             return true;
         }
 
@@ -82,7 +87,7 @@ Please enter your username or email to retrieve your password</p>
                 var valid = check();
                 if(valid) {
                     if(checkEmail()) {
-                        return true;
+                        encode();
                     }
                 }
                 return false;
@@ -91,19 +96,34 @@ Please enter your username or email to retrieve your password</p>
 
 
         function encode() {
-            $ajax({
-                type : "GET",
+            var email = document.getElementById('email').value.trim();
+            var captcha = document.getElementById('captcha').value.trim();
+            $.ajax({
+                type : "POST",
                 url:"/Secure/sendemail",
                 dataType:"json",
-                data:data,
+                data:{'email':email, 'captcha':captcha},
                 success : function(data) {
-                    if (data.code == 0) {
-                        alert(data.message);
-                        document.getElementById('email').value="";
+                    switch (data.code) {
+                        case 1:
+                            alert(data.message);
+                            document.getElementById('captcha').value="";
+                            break;
+                        case 0:
+                            alert(data.message);
+                            window.location.href="/Secure/register";
+                            break;
+                        case 2:
+                            alert(data.message);
+                            window.location.href="/Secure/index";
+                            break;
+                        case 3:
+                            alert(data.message);
+                            window.location.href="/Secure/forget";
+                            break;
                     }
                 }
             });
-
         }
 
     </script>

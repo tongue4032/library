@@ -140,7 +140,6 @@
                 data : data,
                 success : function(data) {
                     if (data.code == 1) {
-                        alert(data.message);
                         window.location='/Secure/index';
                     } else {
                         alert(data.message);

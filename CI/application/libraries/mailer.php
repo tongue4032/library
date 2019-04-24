@@ -24,14 +24,7 @@ class Mailer{
         $mail->AddAddress($smtp_email_to);      // 收件人邮箱
         $mail->IsHTML(true);                 // 是否以HTML形式发送，如果不是，请删除此行
 
-        if(!$mail->Send())
-        {
-            echo "Send failure: " . $mail->ErrorInfo;
-        }
-        else
-        {
-            echo "<script>alert('The system has sent an email to your mailbox.Please login to your mailbox and reset your password in time!');window.location='./username_login'</script>";
-        }
+        return $mail->Send();
 
     }
 }

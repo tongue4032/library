@@ -93,22 +93,6 @@
             }
         }
 
-        // function encode(){
-        //     // var data = $("#form").serialize();//传数据
-        //     $.ajax( {
-        //         type : "POST",
-        //         url:"/Book/search",
-        //         dataType:"json",
-        //         data : data,
-        //         success : function(data) {
-        //             if(data.code == 0){
-        //                 alert(data.message);
-        //                 document.getElementById("info").value="";
-        //             }
-        //         }
-        //     });
-        // }
-
     </script>
 </body>
 <!-- //Body -->

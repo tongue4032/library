@@ -20,8 +20,8 @@ class Book extends CI_Controller
 
     //搜索图书
     public function search(){
-        $type = $this->input->post('type');
-        $info = $this->input->post('info');
+        $type = $this->input->get_post('type');
+        $info = $this->input->get_post('info');
         $data = array(
             'type' => $type,
             'info' => $info
@@ -30,7 +30,7 @@ class Book extends CI_Controller
         if($data['books']){
             $this->load->view('Book_views/query',$data);
         }else{
-            echo "<script>alert('Query failure,Please check again!!');window.location='/Secure'</script>";
+            $this->load->view('Book_views/query_fail');
         }
     }
 
@@ -71,22 +71,12 @@ class Book extends CI_Controller
 
     //归还
     public function give_back(){
-        $barcode = $this->input->get('barcode',Null);
-        $bookname = $this->input->get('bookname',Null);
-        $author = $this->input->get('author',Null);
-        $username = $this->input->get('username',Null);
-        $borrow_time = $this->input->get('borrow_time',Null);
-        $data = array(
-            'barcode' => $barcode,
-            'bookname' => $bookname,
-            'author' => $author,
-            'username' => $username,
-            'borrow_time' => $borrow_time
-        );
-        if($this->Book_model->give_back($data)){
-            echo "<script>alert('Give back successful!');window.location='/Book/info'</script>";
-        }else{
-            echo "<script>alert('Give back failure！');window.location='/Book/info'</script>";
+        $id = (int) $this->input->get_post('id');
+        $back = $this->Book_model->give_back($id);
+        if($back) {
+            echo json_encode(array('code' => 1, 'message' => 'Give back successfull!!'));
+        } else {
+            echo json_encode(array('code' => 0, 'message' => 'Give back failure!!'));
         }
     }
 
@@ -97,7 +87,7 @@ class Book extends CI_Controller
         $condition = array(
             'user_id' => $user['user_id']
         );
-        $data['book'] = $this->Book_model->show_info($condition);
+        $data['books'] = $this->Book_model->show_info($condition);
         $this->load->view('Book_views/info',$data);
     }
 

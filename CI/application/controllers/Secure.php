@@ -18,10 +18,10 @@ class Secure extends CI_Controller
     }
 
     public function captcha(){
-        $this->load->library('captcha');
-        $code = $this->captcha->getCaptcha();
-        $this->session->set_userdata('code', $code);
-        $this->captcha->showImg();
+        $this->load->library('captcha');         //加载这个代替类
+        $captcha= $this->captcha->getCaptcha();  //生成的验证码值
+        $this->session->set_userdata('code', $captcha);   //保存验证码值
+        $this->captcha->showImg();               //生成验证码图片
     }
     public function username_login(){
         $this->load->view('Secure_views/username_login');
@@ -162,12 +162,19 @@ class Secure extends CI_Controller
     //发送邮件
     public function sendemail(){
         $code = $this->input->post('captcha');
-        $code2 = strtolower($this->session->userdata('code'));
-        if(strtolower($code) != $code2){
-            echo "<script>alert('Verification Code Error, Please Re-enter');window.location='./forget'</script>";
-        }else{
-            $email = $this->input->post('email');
-            $this->Secure_model->sendemail($email);
+        $code2 = $this->session->userdata('code');
+        $email = $this->input->post('email');
+        if ($code != $code2) {
+            echo json_encode(array('code' => 1, 'message' => 'Verification Code Error, Please Re-enter'));
+        } elseif ($this->Secure_model->check_permission($email)) {
+            echo json_encode(array('code' => 0, 'message' => 'This email address is not registered. Please check your email address.'));
+        } else {
+            $send = $this->Secure_model->sendemail($email);
+            if ($send) {
+                echo json_encode(array('code' => 2, 'message' => 'The system has sent an email to your mailbox.Please login to your mailbox and reset your password in time!'));
+            } else {
+                echo json_encode(array('code' => 3, 'message' => 'Send failure!!'));
+            }
         }
     }
 

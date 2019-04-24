@@ -23,7 +23,7 @@
 <body>
     <h1 class="title-agile text-center">ONE Library</h1>
       <div class="content-w3ls">
-        <a style="color: #fff" href="<?='/Secure/index'?>"><span class="fa fa-reply" aria-hidden="true">BACK</span></a>
+        <a style="color: #fff" href="<?='/Secure/index' ?>"><span class="fa fa-reply" aria-hidden="true">BACK</span></a>
         <form>
         	<table width="740" border="1" class="text-center" cellspacing="0">	
     		    <tr>
@@ -34,14 +34,14 @@
      			    <td width="160">borrow time</td>
       				<td width="130">operation</td>
     		    </tr>
-            <?php foreach ($book as $books) { ?>
+            <?php foreach ($books as $book) { ?>
        			  <tr style="color: #247d61">
-      				  <td><?php echo $books['barcode']; ?></td>
-      				  <td><?php echo $books['bookname']; ?></td>
-      				  <td><?php echo $books['author']; ?></td>
-      				  <td><?php echo $books['username']; ?></td>
-      				  <td><?php echo $books['borrow_time']; ?></td>
-      				  <td><a href="<?='/Book/give_back?barcode='.$books['barcode'] . '&bookname='.$books['bookname'] . '&author='.$books['author'] . '&username='.$books['username'] . '&borrow_time='.$books['borrow_time']?>">return</a></td>
+      				  <td id="barcode"><?php echo $book['barcode']; ?></td>
+      				  <td><?php echo $book['bookname']; ?></td>
+      				  <td><?php echo $book['author']; ?></td>
+      				  <td><?php echo $book['username']; ?></td>
+      				  <td><?php echo $book['borrow_time']; ?></td>
+      				  <td><a class="backBtn" data-id="<?php echo $book['id'];?>" href="javascript:void(0);">Return</a></td>
        			  </tr>
             <?php } ?>
   		    </table>    
@@ -51,6 +51,32 @@
     <div class="text-center copyright" style="width: 100%;position:absolute;bottom:10px;left:0px;">
         <p>© 2019 ONE Book lending. All rights reserved | Design by Tony</p>
     </div>
+
+    <script src="/js/jquery-2.1.4.min.js"></script>
+    <script>
+        window.onload = function() {
+            $(".backBtn").click(function() {
+                var id = $(this).attr("data-id");
+                encode(id);
+                return false;
+            });
+        }
+
+        function encode(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Book/give_back",
+                dataType: "json",
+                data: {'id': id},
+                success: function (data) {
+                    alert(data.message);
+                    if (data.code == 1) {
+                        window.location.href = "/Book/info";
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 <!-- //Body -->
 </html>

@@ -79,7 +79,7 @@ defined('EXIT_CONFIG')         OR define('EXIT_CONFIG', 3); // configuration err
 defined('EXIT_UNKNOWN_FILE')   OR define('EXIT_UNKNOWN_FILE', 4); // file not found
 defined('TBL_USER')            OR define('TBL_USER', 'lib_user'); // unknown class
 defined('TBL_BOOKINFO')        OR define('TBL_BOOKINFO', 'lib_bookinfo'); // unknown class
-defined('TBL_BOOK_ACTION')     OR define('TBL_BOOK_ACTION', 'lib_book_action'); // unknown class
+defined('TBL_BORROW')          OR define('TBL_BORROW', 'lib_borrow'); // unknown class
 defined('EXIT_UNKNOWN_METHOD') OR define('EXIT_UNKNOWN_METHOD', 6); // unknown class member
 defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user input
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
