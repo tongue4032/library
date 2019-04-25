@@ -6,11 +6,6 @@ class Admin_model extends CI_Model {
 		$this->load->database();
 		$this->load->library('session');
 	}
-	const TBL_USER = 'lib_user';
-	const TBL_ADMIN = 'lib_admin';
-	const TBL_BOOKINFO = 'lib_bookinfo';
-	const TBL_TYPE = 'lib_type';
-	const TBL_USERTYPE = 'lib_userType';
 
 	//登录
 	public function get_user($username,$pwd){
