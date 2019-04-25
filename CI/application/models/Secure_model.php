@@ -30,12 +30,6 @@ class Secure_model extends CI_Model {
 	}
 
 	public function sendemail($email){
-//		$this->db->select('user_id,username,password');//进行邮箱验证
-//        $sql = $this->db->get_where('lib_user',"email='$email'")->row_array();
-//        $id = $sql['user_id'];
-//        if(!$id){//该邮箱尚未注册！
-//            return array('code' => 0, 'result' => 'This email address is not registered. Please check your email address.');
-//        }else{
 //           $get_pass_time = time(); //获取当前时间
 //           $uid = $sql['user_id'];//用户id
            $token = rand(1000,9999);//组合验证码

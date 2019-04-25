@@ -29,7 +29,20 @@ class Book_model extends CI_Model
         return $query->row_array();
     }
 
-    public function borrow($data){
+    public  function borrow_book($id){
+        $query = $this->db->get_where(TBL_BOOKINFO,array('id' => $id));
+        return $query->row_array();
+    }
+
+    public function borrow($book,$data){
+        $data = array(
+            'barcode' => $book['barcode'],
+            'bookname' => $book['bookname'],
+            'author' => $book['author'],
+            'user_id' => $data['user_id'],
+            'username' => $data['username'],
+            'borrow_time' => $data['time']
+        );
         return $this->db->insert(TBL_BORROW,$data);
     }
 

@@ -29,7 +29,7 @@
       				  <td><?php echo $book['barcode']; ?></td>
       				  <td>《<?php echo $book['bookname'] ;?>》</td>
       				  <td><?php echo $book['author']; ?></td>
-      				  <td><a href="<?='/Book/borrow?barcode='.$book['barcode'] . '&bookname='.$book['bookname'] . '&author='.$book['author']?>">borrow</a></td>
+      				  <td><a class="borrowBtn" data-id="<?php echo $book['id'];?>" barcode-id="<?php echo $book['barcode'];?>" href="javascript:void(0);">borrow</a></td>
        			  </tr>
             <?php } ?>
   		    </table>    
@@ -49,22 +49,39 @@
             window.scrollTo(0, 1);
         }
 
-        // function encode(){
-        //     $.ajax( {
-        //         type : "GET",
-        //         url:"/Book/borrow",
-        //         dataType:"json",
-        //         data:data,
-        //         success : function(data) {
-        //             if (data.code == 1) {
-        //                 alert(data.message);
-        //                 window.location='/Book/info';
-        //             }else{
-        //                 alert(data.message);
-        //             }
-        //         }
-        //     });
-        // }
+        window.onload = function() {
+            $(".borrowBtn").click(function() {
+                var id = $(this).attr("data-id");
+                var barcode = $(this).attr("barcode-id");
+                encode(id,barcode);
+                return false;
+            });
+        }
+
+        function encode(id,barcode) {
+            $.ajax({
+                type: "POST",
+                url: "/Book/borrow",
+                dataType: "json",
+                data: {'id':id,'barcode':barcode},
+                success: function (data) {
+                    switch (data.code) {
+                        case 0:
+                            alert(data.message);
+                            window.location.href="/Secure/username_login";
+                            break;
+                        case 1:
+                            alert(data.message);
+                            window.location.href="/Book/search";
+                            break;
+                        case 2:
+                            alert(data.message);
+                            window.location.href="/Book/info";
+                            break;
+                    }
+                }
+            });
+        }
     </script>
 </body>
 <!-- //Body -->

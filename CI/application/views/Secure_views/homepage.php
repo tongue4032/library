@@ -43,7 +43,7 @@
                     <div class="wthree-field">
                         <input style="outline: none;" type="submit" id="search" value="Search" class="enjoy-css">
                     </div>
-
+<!--                    <h6 style="color: #ff0000;">--><?php //echo $this->session->tempdata('item');?><!--</h6>-->
                 </div>
             </form>
             <div class="wthree-field-k">

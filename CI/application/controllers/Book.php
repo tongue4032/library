@@ -39,31 +39,24 @@ class Book extends CI_Controller
     public function borrow(){
         $user = $this->session->userdata('user');
         if(empty($user)){
-            echo "<script>alert('You did not log in!!');window.location='/Secure/username_login'</script>";
-//            echo json_encode(array('code' => 1, 'message' => '你没登录'));
+            echo json_encode(array('code' => 0, 'message' => 'You did not log in!!'));
         }else{
             $username = $user['username'];
             $user_id = $user['user_id'];
-            $barcode = $this->input->get('barcode',Null);
-            $bookname = $this->input->get('bookname',Null);
-            $author = $this->input->get('author',Null);
+            $id = (int) $this->input->get_post('id');
+            $barcode = (int) $this->input->get_post('barcode');
             $time = date('Y-m-d');
+            $book = $this->Book_model->borrow_book($id);
             $data = array(
-                'barcode' => $barcode,
-                'bookname' => $bookname,
-                'author' => $author,
-                'user_id' => $user_id,
                 'username' => $username,
-                'borrow_time' => $time
+                'user_id' => $user_id,
+                'time' => $time
             );
             if(!empty($this->Book_model->get($barcode,$user_id))){
-                echo "<script>alert('This book has been borrowed, please choose again!');window.location='/Secure'</script>";
-//				echo json_encode(array('code' => 0, 'message' => 'This book has been borrowed, please choose again!'));
+				echo json_encode(array('code' => 1, 'message' => 'This book has been borrowed, please choose again!'));
             }else{
-                if($this->Book_model->borrow($data)){
-                    echo "<script>alert('Borrowing successful!');window.location='/Book/info'</script>";
-//					echo json_encode(array('code' => 1, 'message' => 'Borrowing successful!'));
-                }
+                $this->Book_model->borrow($book,$data);
+                echo json_encode(array('code' => 2, 'message' => 'Borrowing successful!'));
             }
 
         }
