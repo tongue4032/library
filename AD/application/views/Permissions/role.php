@@ -102,13 +102,15 @@
                     <div class="panel-body">
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <div class="table-responsive">
+                                <?php $users = $this->session->userdata('use'); ?>
                                 <p>User ID：
-                                    <input id="user_id" name="user_id" type="text" value="<?php echo $user_id ?>" readonly>
+                                    <input id="user_id" name="user_id" type="text" value="<?php echo $users['user_id']; ?>" readonly>
                                 &nbsp;&nbsp;&nbsp;&nbsp;Username：
-                                    <input id="username" name="username" type="text" value="<?php echo $username ?>" readonly>
+                                    <input id="username" name="username" type="text" value="<?php echo $users['username']; ?>" readonly>
                                 </p>
                             </div> 
                             <div class="table-responsive">
+                                <?php $type = $this->session->userdata('types'); ?>
                                 <p>Role：
                                     <select id="professional" name="professional">
                                         <?php foreach ($type as $row) { ?>

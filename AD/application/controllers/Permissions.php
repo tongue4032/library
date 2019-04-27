@@ -61,17 +61,23 @@ class Permissions extends CI_Controller
     public function role(){
         $user = $this->session->userdata('user');
         if($user['professional'] == 'Administrator'){
-            echo "<script>alert('You do not have permission to do this!');window.location='/Admin/role_users'</script>";
+            echo json_encode(array('code' => 1, 'message' => 'You do not have permission to do this!!'));
         }else{
-            $user_id = $this->input->get('user_id',Null);
-            $username = $this->input->get('username',Null);
+            $id = (int) $this->input->get_post('id');
+            $use = $this->Permission_model->get_user($id);
             $data = array(
-                'user_id' => $user_id,
-                'username' => $username
+                'user_id' => $use['user_id'],
+                'username' => $use['username']
             );
-            $data['type'] = $this->Permission_model->get_userType();
-            $this->load->view('Permissions/role',$data);
+            $type = $this->Permission_model->get_userType();
+            $this->session->set_userdata('use',$data);
+            $this->session->set_userdata('types',$type);
+            echo json_encode(array('code' =>2));
         }
+    }
+
+    public function show_role() {
+        $this->load->view('/Permissions/role');
     }
 
     //执行修改
@@ -102,15 +108,20 @@ class Permissions extends CI_Controller
         if($user['professional'] == 'Administrator'){
             echo json_encode(array('code' => 1, 'message' => 'You do not have permission to do this!!'));
         }else{
-            $admin_id = $this->input->get('admin_id',Null);
-            $admin_name = $this->input->get('admin_name',Null);
+            $id = (int) $this->input->get_post('id');
+            $admin = $this->Permission_model->get_admin($id);
             $data = array(
-                'admin_id' => $admin_id,
-                'admin_name' => $admin_name
+                'admin_id' => $admin['admin_id'],
+                'admin_name' => $admin['admin_name']
             );
-            $data['type'] = $this->Permission_model->get_type();
-            $this->load->view('Permissions/roles',$data);
+            $type = $this->Permission_model->get_type();
+            $this->session->set_userdata('type',$type);
+            $this->session->set_userdata('admin',$data);
+            echo json_encode(array('code' => 2));
         }
+    }
+    public function show_roles() {
+        $this->load->view('/Permissions/roles');
     }
 
     //执行修改

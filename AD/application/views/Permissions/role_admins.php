@@ -166,13 +166,18 @@
                 function edit(id) {
                     $.ajax({
                         type: "POST",
-                        url: "/Permissions/role_admin",
+                        url: "/Permissions/roles",
                         dataType: "json",
                         data: {'id': id},
                         success: function (data) {
-                            alert(data.message);
-                            if (data.code = 1) {
-                                window.location.href="/User/show_users";
+                            switch (data.code) {
+                                case 1:
+                                    alert(data.message);
+                                    window.location.href="/Permissions/role_admins";
+                                    break;
+                                case 2:
+                                    window.location.href="/Permissions/show_roles";
+                                    break;
                             }
                         }
                     });

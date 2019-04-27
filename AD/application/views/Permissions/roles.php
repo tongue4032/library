@@ -102,15 +102,17 @@
                     <div class="panel-body">
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <div class="table-responsive">
+                                <?php $admin = $this->session->userdata('admin'); ?>
                                 <p>Admin ID：
-                                    <input id="admin_id" name="admin_id" type="text" value="<?php echo $admin_id ?>" readonly>
+                                    <input id="admin_id" name="admin_id" type="text" value="<?php echo $admin['admin_id'] ?>" readonly>
                                 &nbsp;&nbsp;&nbsp;&nbsp;Admin Name：
-                                    <input id="admin_name" name="admin_name" type="text" value="<?php echo $admin_name ?>" readonly>
+                                    <input id="admin_name" name="admin_name" type="text" value="<?php echo $admin['admin_name'] ?>" readonly>
                                 </p>
                             </div> 
                             <div class="table-responsive">
                                 <p>Role：
                                     <select id="professonal" name="professional">
+                                        <?php $type = $this->session->userdata('type'); ?>
                                         <?php foreach ($type as $row){ ?>
                                             <option value="<?php echo $row['professional']; ?>"><?php echo $row['professional']; ?></option>
                                         <?php } ?>

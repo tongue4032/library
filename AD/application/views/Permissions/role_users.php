@@ -115,7 +115,7 @@
     								<td class="text-center"><?php echo $user['user_id'] ?></td>
     								<td class="text-center"><?php echo $user['username']?></td>
     								<td class="text-center"><?php echo $user['professional']?></td>
-    								<td class="text-center"><a href="<?='/Permissions/role?user_id='.$user['user_id'] . '&username='.$user['username'] ?>"><span class="fa fa-edit"></span></a></td>
+    								<td class="text-center"><a class="editBtn" data-id="<?php echo $user['user_id']; ?>" href="javascript: void (0);"><span class="fa fa-edit"></span></a></td>
     							</tr>
                                 <?php } ?>
 							</table>
@@ -154,6 +154,35 @@
                 var num;
                 i<10?num="0"+i:num=i;
                 return num;
+            }
+
+            window.onload = function () {
+                $(".editBtn").click (function () {
+                    var id = $(this).attr("data-id");
+                    edit(id);
+                    return false;
+                });
+
+                function edit(id) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Permissions/role",
+                        dataType: "json",
+                        data: {'id': id},
+                        success: function (data) {
+                            switch (data.code) {
+                                case 1:
+                                    alert(data.message);
+                                    window.location.href="/Permissions/role_users";
+                                    break;
+                                case 2:
+                                    window.location.href="/Permissions/show_role";
+                                    break;
+                            }
+                        }
+                    });
+                }
+
             }
     </script>
  

@@ -62,4 +62,14 @@ class Permission_model extends CI_Model
         $query  = $this->db->query($sql);
         return $query->row_array();
     }
+
+    public function get_admin ($id) {
+        $query = $this->db->get_where(TBL_ADMIN,array('admin_id' => $id));
+        return $query->row_array();
+    }
+
+    public function get_user ($id) {
+        $query = $this->db->get_where(TBL_USER,array('user_id' => $id));
+        return $query->row_array();
+    }
 }
