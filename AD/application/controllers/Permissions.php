@@ -7,7 +7,7 @@ class Permissions extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
-        $this->load->model('admin_model');
+        $this->load->model('Permission_model');
         $this->load->library('pagination');
         $this->load->library('form_validation');
     }
@@ -20,19 +20,19 @@ class Permissions extends CI_Controller
             $page = 1;
         }
         $offset = ($page - 1) * $page_size;
-        $pageall = $this->admin_model->get_user_all();
-        $config['base_url'] = '/Admin/role_users/page/';
+        $pageall = $this->Permission_model->get_user_all();
+        $config['base_url'] = '/Permissions/role_users/page/';
         $config['total_rows'] = $pageall['total'];
         $config['per_page'] = $page_size;
         $config['use_page_numbers'] = true;//URL中的数字显示第几页，否则，显示到达第几条
         $config['first_link'] = 'First';
         $config['last_link'] = 'Last';
 
-        $data['users'] = $this->admin_model->user_select_all($page_size,$offset);
+        $data['users'] = $this->Permission_model->user_select_all($page_size,$offset);
         $this->pagination->initialize($config);
         $data['link'] = $this->pagination->create_links();
         // $data['users'] = $this->admin_model->show_user();
-        $this->load->view('role_users',$data);
+        $this->load->view('Permissions/role_users',$data);
     }
 
     public function role_admins(){
@@ -42,19 +42,19 @@ class Permissions extends CI_Controller
             $page = 1;
         }
         $offset = ($page - 1) * $page_size;
-        $pageall = $this->admin_model->get_admin_all();
-        $config['base_url'] = '/Admin/role_admins/page/';
+        $pageall = $this->Permission_model->get_admin_all();
+        $config['base_url'] = '/Permissions/role_admins/page/';
         $config['total_rows'] = $pageall['total'];
         $config['per_page'] = $page_size;
         $config['use_page_numbers'] = true;//URL中的数字显示第几页，否则，显示到达第几条
         $config['first_link'] = 'First';
         $config['last_link'] = 'Last';
 
-        $data['admins'] = $this->admin_model->admin_select_all($page_size,$offset);
+        $data['admins'] = $this->Permission_model->admin_select_all($page_size,$offset);
         $this->pagination->initialize($config);
         $data['link'] = $this->pagination->create_links();
         // $data['admins'] = $this->admin_model->show_admin();
-        $this->load->view('role_admins',$data);
+        $this->load->view('Permissions/role_admins',$data);
     }
 
     //修改用户角色
@@ -69,8 +69,8 @@ class Permissions extends CI_Controller
                 'user_id' => $user_id,
                 'username' => $username
             );
-            $data['type'] = $this->admin_model->get_userType();
-            $this->load->view('role',$data);
+            $data['type'] = $this->Permission_model->get_userType();
+            $this->load->view('Permissions/role',$data);
         }
     }
 
@@ -87,7 +87,7 @@ class Permissions extends CI_Controller
                 'username' => $username,
                 'professional' => $professional
             );
-            $user_role = $this->admin_model->change_user_role($data, $user_id);
+            $user_role = $this->Permission_model->change_user_role($data, $user_id);
             if($user_role) {
                 echo json_encode(array('code' => 1, 'message' => 'Modify successfull!'));
             }else {
@@ -100,7 +100,7 @@ class Permissions extends CI_Controller
     public function roles(){
         $user = $this->session->userdata('user');
         if($user['professional'] == 'Administrator'){
-            echo "<script>alert('You do not have permission to do this!');window.location='/Admin/role_admins'</script>";
+            echo json_encode(array('code' => 1, 'message' => 'You do not have permission to do this!!'));
         }else{
             $admin_id = $this->input->get('admin_id',Null);
             $admin_name = $this->input->get('admin_name',Null);
@@ -108,8 +108,8 @@ class Permissions extends CI_Controller
                 'admin_id' => $admin_id,
                 'admin_name' => $admin_name
             );
-            $data['type'] = $this->admin_model->get_type();
-            $this->load->view('roles',$data);
+            $data['type'] = $this->Permission_model->get_type();
+            $this->load->view('Permissions/roles',$data);
         }
     }
 
@@ -126,7 +126,7 @@ class Permissions extends CI_Controller
                 'admin_name' => $admin_name,
                 'professional' => $professional
             );
-            $admin_role = $this->admin_model->change_admin_role($data,$admin_id);
+            $admin_role = $this->Permission_model->change_admin_role($data,$admin_id);
             if($admin_role) {
                 echo json_encode(array('code' => 1, 'message' => 'Modify successfull!'));
             }else{

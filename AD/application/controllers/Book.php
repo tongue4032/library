@@ -7,7 +7,7 @@ class Book extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
-        $this->load->model('admin_model');
+        $this->load->model('Book_model');
         $this->load->library('pagination');
         $this->load->library('form_validation');
     }
@@ -15,7 +15,7 @@ class Book extends CI_Controller
 
     //添加图书
     public function add_book(){
-        $this->load->view('add_books');
+        $this->load->view('Books/add_books');
     }
 
     //显示书库
@@ -26,18 +26,18 @@ class Book extends CI_Controller
             $page = 1;
         }
         $offset = ($page - 1) * $page_size;
-        $pageall = $this->admin_model->get_all();
-        $config['base_url'] = '/Admin/show_books/page/';
+        $pageall = $this->Book_model->get_all();
+        $config['base_url'] = '/Book/show_books/page/';
         $config['total_rows'] = $pageall['total'];
         $config['per_page'] = $page_size;
         $config['use_page_numbers'] = true;//URL中的数字显示第几页，否则，显示到达第几条
         $config['first_link'] = 'First';
         $config['last_link'] = 'Last';
 
-        $data['book'] = $this->admin_model->book_select_all($page_size,$offset);
+        $data['books'] = $this->Book_model->book_select_all($page_size,$offset);
         $this->pagination->initialize($config);
         $data['link'] = $this->pagination->create_links();
-        $this->load->view('show_books',$data);
+        $this->load->view('Books/show_books',$data);
     }
 
     //执行添加
@@ -66,7 +66,7 @@ class Book extends CI_Controller
                 'publish_date' => $publish_date,
                 'content' => $content
             );
-            $add_book = $this->admin_model->add_book($data);
+            $add_book = $this->Book_model->add_book($data);
             if ($add_book) {
                 echo json_encode(array('code' => 1, 'message' => 'Add successfull!'));
             }else {
@@ -77,25 +77,22 @@ class Book extends CI_Controller
 
     //修改图书
     public function change_book(){
-        $barcode = $this->input->get('barcode',Null);
-        $bookname = $this->input->get('bookname',Null);
-        $author = $this->input->get('author',Null);
-        $press = $this->input->get('press',Null);
-        $publish_date = $this->input->get('publish_date',Null);
-        $book = $this->admin_model->get($barcode);
-        $content = $book['content'];
-        // var_dump($content);
-        // var_dump($data['book']);
+        $id = (int) $this->input->get_post('id');
+        $book = $this->Book_model->get($id);
         $data = array(
-            'barcode' => $barcode,
-            'bookname' => $bookname,
-            'author' => $author,
-            'press' => $press,
-            'publish_date' => $publish_date,
-            'content' => $content
+            'barcode' => $book['barcode'],
+            'bookname' => $book['bookname'],
+            'author' => $book['author'],
+            'press' => $book['press'],
+            'publish_date' => $book['publish_date'],
+            'content' => $book['content']
         );
+        $this->session->set_userdata('fix_book',$data);
+        echo json_encode(array('code' => 1));
+    }
 
-        $this->load->view('change',$data,$content);
+    public function change_books() {
+        $this->load->view('Books/change');
     }
 
     //执行修改
@@ -122,7 +119,7 @@ class Book extends CI_Controller
                 'publish_date' => $publish_date,
                 'content' => $content
             );
-            $book = $this->admin_model->change_book($data,$barcode);
+            $book = $this->Book_model->change_book($data,$barcode);
             if($book) {
                 echo json_encode(array('code' => 1, 'message' => 'Modify successfull!'));
             }else{
@@ -133,22 +130,19 @@ class Book extends CI_Controller
 
     //删除图书
     public function delete_book(){
-        $barcode = $this->input->get('barcode',Null);
-        $bookname = $this->input->get('bookname',Null);
-        $author = $this->input->get('author',Null);
-        $press = $this->input->get('press',Null);
-        $publish_date = $this->input->get('publish_date',Null);
+        $id = (int) $this->input->get_post('id');
+        $book = $this->Book_model->get($id);
         $data = array(
-            'barcode' => $barcode,
-            'bookname' => $bookname,
-            'author' => $author,
-            'press' => $press,
-            'publish_date' => $publish_date
+            'barcode' => $book['barcode'],
+            'bookname' => $book['bookname'],
+            'author' => $book['author'],
+            'press' => $book['press'],
+            'publish_date' => $book['publish_date']
         );
-        if($this->admin_model->delete_books($data)){
-            echo "<script>window.location='/Admin/show_books'</script>";
+        if($this->Book_model->delete_books($data)){
+            echo json_encode(array('code' => 1, 'message' => 'Delete successfull!!'));
         }else{
-            echo "<script>window.location='/Admin/show_books'</script>";
+            echo json_encode(array('code' => 0, 'message' => 'Delete failure.Please again delete.'));
         }
     }
 }

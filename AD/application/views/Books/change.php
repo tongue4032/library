@@ -14,7 +14,7 @@
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/Admin/Home">ONELibrary<img src="/common/images/logo.png"></a>
+                <a class="navbar-brand" href="/Secure/home">ONELibrary<img src="/common/images/logo.png"></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -27,9 +27,9 @@
                     </a>
                     <?php $user = $this->session->userdata('user'); ?>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="<?='/admin/admin_info'?>"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo $user['admin_name']; ?></a></li>
-                        <li><a href="/Admin/modifyAdmin"><i class="fa fa-cog fa-fw"></i>&nbsp;setting</a></li>
-                        <li><a href="<?='/admin/logout'?>"><i class="fa fa-reply fa-fw"></i>&nbsp;log out</a></li>
+                        <li><a href="/Profile/admin_info"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo $user['admin_name']; ?></a></li>
+                        <li><a href="/Profile/modifyAdmin"><i class="fa fa-cog fa-fw"></i>&nbsp;setting</a></li>
+                        <li><a href="/Secure/logout"><i class="fa fa-reply fa-fw"></i>&nbsp;log out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -40,16 +40,16 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li>
-                        <a href="/Admin/Home"><i class="fa fa-home"></i> Home</a>
+                        <a href="/Secure/home"><i class="fa fa-home"></i> Home</a>
                     </li>
                     <li>
                         <a><i class="fa fa-book"></i> Books Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/show_books">Books</a>
+                                <a href="/Book/show_books">Books</a>
                             </li>
                             <li>
-                                <a href="/Admin/add_book"  class="active-menu">Add Books</a>
+                                <a href="/Book/add_book"  class="active-menu">Add Books</a>
                             </li>
                         </ul>
                     </li>
@@ -58,7 +58,7 @@
                         <a><i class="fa fa-group"></i> Users Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/show_users">Users</a>
+                                <a href="/User/show_users">Users</a>
                             </li>
                         </ul>
                     </li>
@@ -78,12 +78,12 @@
                         <a><i class="fa fa-hdd-o"></i> Rights Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/role_users">Role Management</a>
+                                <a href="/Permissions/role_users">Role Management</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/Admin/admin_info"><i class="fa fa-info" style="margin-left: 4px;margin-right: 14px;"></i> Admin Info</a>
+                        <a href="/Profile/admin_info"><i class="fa fa-info" style="margin-left: 4px;margin-right: 14px;"></i> Admin Info</a>
                     </li>
                 </ul>
             </div>
@@ -101,24 +101,25 @@
                     <div class="panel-body">
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <div class="table-responsive">
+                                <?php $book = $this->session->userdata('fix_book'); ?>
                                 <p>Barcode：
-                                    <input type="text" id="barcode" name="barcode" value="<?php echo $barcode ?>" readonly>
+                                    <input type="text" id="barcode" name="barcode" value="<?php echo $book['barcode'] ?>" readonly>
                                 &nbsp;&nbsp;&nbsp;&nbsp;Bookname：
-                                    <input id="bookname" name="bookname" type="text" value="<?php echo $bookname ?>" required>
+                                    <input id="bookname" name="bookname" type="text" value="<?php echo $book['bookname']?>" required>
                                 </p>
                             </div> 
                             <div class="table-responsive">
                                 <p>Author：
-                                    <input id="author" name="author" type="text" value="<?php echo $author ?>" required>
+                                    <input id="author" name="author" type="text" value="<?php echo $book['author'] ?>" required>
                                 &nbsp;&nbsp;&nbsp;&nbsp;Press.：
-                                    <input id="press" name="press" type="text" value="<?php echo $press ?>" required>
+                                    <input id="press" name="press" type="text" value="<?php echo $book['press'] ?>" required>
                                 </p>
                             </div> 
                             <div class="table-responsive">
                                 <p>Publish Date：
-                                    <input id="date" name="date" type="text" value="<?php echo $publish_date ?>" required >
+                                    <input id="date" name="date" type="text" value="<?php echo $book['publish_date'] ?>" required >
                                 &nbsp;&nbsp;&nbsp;&nbsp;Content：
-                                    <textarea style="vertical-align: top;" id="content" name="content" maxlength="100" onkeyup="this.value=this.value.substring(0, 100)" cols="35" rows="5" ><?php echo $content ?></textarea>
+                                    <textarea style="vertical-align: top;" id="content" name="content" maxlength="100" onkeyup="this.value=this.value.substring(0, 100)" cols="35" rows="5" ><?php echo $book['content'] ?></textarea>
                                 </p>
                                 <div style="margin-top: -28px; margin-left: 710px;">
                                     <span id="text-count" style=" color: #0480be;">100</span>/100
@@ -126,7 +127,7 @@
                             </div>
                             <div style="margin-left: 340px;margin-top: 30px;color: #fff;">
                                 <button style="background-color: #3a7ed4;border-radius: 12px;padding: 10px 20px;">
-                                    <a href="/Admin/show_books" style="color: #fff;text-decoration:none;">Return</a>
+                                    <a href="/Book/show_books" style="color: #fff;text-decoration:none;">Return</a>
                                 </button>
                                 <input id="add" type="submit"  value="Modify" style="background-color: #3a7ed4;width: 80px;border-radius: 12px;padding: 10px 20px;">
                             </div>
@@ -277,9 +278,9 @@
                 dataType:"json",
                 data : data,
                 success : function(data) {
+                    alert(data.message);
                     if (data.code == 1) {
-                        alert(data.message);
-                        window.location='/Admin/show_books';
+                        window.location='/Book/show_books';
                     }else{
                         alert(data.message);
                     }

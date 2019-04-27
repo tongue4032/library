@@ -14,7 +14,7 @@
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/Admin/Home">ONELibrary<img src="/common/images/logo.png"></a>
+                <a class="navbar-brand" href="/Secure/home">ONELibrary<img src="/common/images/logo.png"></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -27,9 +27,9 @@
                     </a>
                     <?php $user = $this->session->userdata('user'); ?>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="<?='/admin/admin_info'?>"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo $user['admin_name']; ?></a></li>
-                        <li><a href="/Admin/modifyAdmin"><i class="fa fa-cog fa-fw"></i>&nbsp;setting</a></li>
-                        <li><a href="<?='/admin/logout'?>"><i class="fa fa-reply fa-fw"></i>&nbsp;log out</a></li>
+                        <li><a href="/Profile/admin_info"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo $user['admin_name']; ?></a></li>
+                        <li><a href="/Profile/modifyAdmin"><i class="fa fa-cog fa-fw"></i>&nbsp;setting</a></li>
+                        <li><a href="/Secure/logout"><i class="fa fa-reply fa-fw"></i>&nbsp;log out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -40,16 +40,16 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li>
-                        <a href="/Admin/Home"><i class="fa fa-home"></i> Home</a>
+                        <a href="/Secure/home"><i class="fa fa-home"></i> Home</a>
                     </li>
                     <li>
                         <a><i class="fa fa-book"></i> Books Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/show_books">Books</a>
+                                <a href="/Book/show_books">Books</a>
                             </li>
                             <li>
-                                <a href="/Admin/add_book">Add Books</a>
+                                <a href="/Book/add_book">Add Books</a>
                             </li>
                         </ul>
                     </li>
@@ -58,7 +58,7 @@
                         <a><i class="fa fa-group"></i> Users Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/show_users">Users</a>
+                                <a href="/User/show_users">Users</a>
                             </li>
                         </ul>
                     </li>
@@ -78,12 +78,12 @@
                         <a><i class="fa fa-hdd-o"></i> Rights Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/role_users">Role Management</a>
+                                <a href="/Permissions/role_users">Role Management</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/Admin/admin_info"><i class="fa fa-info" style="margin-left: 4px;margin-right: 14px;"></i> Admin Info</a>
+                        <a href="/Profile/admin_info"><i class="fa fa-info" style="margin-left: 4px;margin-right: 14px;"></i> Admin Info</a>
                     </li>
                 </ul>
             </div>
@@ -186,7 +186,7 @@
             function checkPwd(){
                 var password = document.getElementById("admin_pwd").value.trim();
                 if(!(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/).test(password)){
-                    alert("Please enter the correct password format!");
+                    alert("Password length is 6 or more digits and English!");
                     document.getElementById('admin_pwd').value="";
                     return false;
                 }
@@ -229,11 +229,19 @@
                     dataType : "json",
                     data : data,
                     success : function (data) {
-                        if (data.code == 1) {
-                            alert(data.message);
-                            window.location = '/Admin/show_admins';
-                        }else{
-                            alert(data.message);
+                        switch (data.code) {
+                            case 0:
+                                alert(data.message);
+                                window.location.href="/Admin/show_admins";
+                                break;
+                            case 1:
+                                alert(data.message);
+                                window.location.href="/Admin/show_admins";
+                                break;
+                            case 2:
+                                alert(data.message);
+                                window.location.href="/Admin/show_admins";
+                                break;
                         }
                     }
                 });

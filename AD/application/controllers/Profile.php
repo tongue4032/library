@@ -7,7 +7,7 @@ class Profile extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
-        $this->load->model('admin_model');
+        $this->load->model('Profile_model');
         $this->load->library('pagination');
         $this->load->library('form_validation');
     }
@@ -15,13 +15,13 @@ class Profile extends CI_Controller
 
     //管理员信息
     public function admin_info(){
-        $this->load->view('admin_info');
+        $this->load->view('Profile/admin_info');
     }
 
     //修改管理员信息
     public function modifyAdmin(){
         $user = $this->session->userdata('user');
-        $this->load->view('modifyAdmin',$user);
+        $this->load->view('Profile/modifyAdmin',$user);
     }
 
     //执行修改
@@ -41,7 +41,7 @@ class Profile extends CI_Controller
                 'admin_pwd' => $admin_pwd,
                 'professional' => $professional,
             );
-            $row = $this->admin_model->modifyAdmin($data,$admin_id);
+            $row = $this->Profile_model->modifyAdmin($data,$admin_id);
             if($row) {
                 echo json_encode(array('code' => 1, 'message' => 'Modify successfull! Please Login again!'));
             }else{

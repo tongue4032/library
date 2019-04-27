@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,7 @@
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/Admin/home">ONELibrary<img src="/common/images/logo.png"></a>
+                <a class="navbar-brand" href="/Secure/home">ONELibrary<img src="/common/images/logo.png"></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -27,9 +27,9 @@
                     </a>
                     <?php $user = $this->session->userdata('user'); ?>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="<?='/admin/admin_info'?>"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo $user['admin_name']; ?></a></li>
-                        <li><a href="/Admin/modifyAdmin"><i class="fa fa-cog fa-fw"></i>&nbsp;setting</a></li>
-                        <li><a href="<?='/admin/logout'?>"><i class="fa fa-reply fa-fw"></i>&nbsp;log out</a></li>
+                        <li><a href="/Profile/admin_info"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo $user['admin_name']; ?></a></li>
+                        <li><a href="/Profile/modifyAdmin"><i class="fa fa-cog fa-fw"></i>&nbsp;setting</a></li>
+                        <li><a href="/Secure/logout"><i class="fa fa-reply fa-fw"></i>&nbsp;log out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -40,16 +40,16 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li>
-                        <a href="/Admin/Home"><i class="fa fa-home"></i> Home</a>
+                        <a href="/Secure/home"><i class="fa fa-home"></i> Home</a>
                     </li>
                     <li>
                         <a><i class="fa fa-book"></i> Books Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/show_books">Books</a>
+                                <a href="/Book/show_books">Books</a>
                             </li>
                             <li>
-                                <a href="/Admin/add_book">Add Books</a>
+                                <a href="/Book/add_book">Add Books</a>
                             </li>
                         </ul>
                     </li>
@@ -58,7 +58,7 @@
                         <a><i class="fa fa-group"></i> Users Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/show_users">Users</a>
+                                <a href="/User/show_users">Users</a>
                             </li>
                         </ul>
                     </li>
@@ -78,12 +78,12 @@
                         <a><i class="fa fa-hdd-o"></i> Rights Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/role_users">Role Management</a>
+                                <a href="/Permissions/role_users">Role Management</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/Admin/admin_info"><i class="fa fa-info" style="margin-left: 4px;margin-right: 14px;"></i> Admin Info</a>
+                        <a href="/Profile/admin_info"><i class="fa fa-info" style="margin-left: 4px;margin-right: 14px;"></i> Admin Info</a>
                     </li>
                 </ul>
             </div>
@@ -115,7 +115,7 @@
                                     <td class="text-center"><?php echo $admin['admin_pwd'] ?></td>
                                     <td class="text-center"><?php echo $admin['professional']?></td>
                                     <td class="text-center"><?php echo $admin['last_login_date']?></td>
-                                    <td class="text-center"><a href="<?='/Admin/change_admin?admin_id='.$admin['admin_id'] . '&admin_name='.$admin['admin_name'] ?>"><span class="fa fa-edit"></span></a>&nbsp;|&nbsp;<a id="delete" href="<?='/Admin/delete_admins?admin_id='.$admin['admin_id'] . '&admin_name='.$admin['admin_name'] .'&admin_pwd='.$admin['admin_pwd'] . '&professional='.$admin['professional'] . '&last_login_date='.$admin['last_login_date'] ?>"><span id="delete" class="fa fa-trash" style="color: #ff0000;"></span></a></td>
+                                    <td class="text-center"><a class="editBtn" data-id="<?php echo $admin['admin_id'];?>" href="javascript:void (0);"><span id="edit" class="fa fa-edit"></span></a> &nbsp;|&nbsp;<a class="deleteBtn" data-id="<?php echo $admin['admin_id'];?>" href="javascript:void(0);"><span id="delete" class="fa fa-trash" style="color: #ff0000;"></span></a></td>
                                 </tr>
                                 <?php } ?>
                             </table>
@@ -126,12 +126,12 @@
                     </div>
                 </div>
             </div>
-        </div>  
-    <script src="/common/js/jquery-1.10.2.js"></script>
-    <script src="/common/js/bootstrap.min.js"></script>
-<!--    <script src="/common/js/jquery-2.1.4.min.js"></script>-->
-    <script src="/common/js/jquery.metisMenu.js"></script>
-    <script src="/common/js/custom-scripts.js"></script>
+        </div>
+        <script src="/common/js/jquery-2.1.4.min.js"></script>
+        <script src="/common/js/jquery-1.10.2.js"></script>
+        <script src="/common/js/bootstrap.min.js"></script>
+        <script src="/common/js/jquery.metisMenu.js"></script>
+        <script src="/common/js/custom-scripts.js"></script>
     <script>
             window.onload=function(){
               setInterval("NowTime()",1000);
@@ -158,30 +158,62 @@
             }
 
             window.onload = function() {
-                document.getElementById('delete').onclick = function () {
-                    encode();
+                $(".editBtn").click(function () {
+                    var id = $(this).attr("data-id");
+                    edit(id);
                     return false;
+                });
+
+                function edit(id) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/change_admin",
+                        dataType: "json",
+                        data: {'id': id},
+                        success: function (data) {
+                            switch (data.code ) {
+                                case 0:
+                                    alert(data.message);
+                                    window.location.href="/Admin/show_admins";
+                                    break;
+                                case 1:
+                                    window.location.href="/Admin/changes";
+                            }
+                        }
+                    });
+                }
+
+                $(".deleteBtn").click(function () {
+                    var id = $(this).attr("data-id");
+                    de(id);
+                    return false;
+                });
+
+                function de(id) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/delete_admins",
+                        dataType: "json",
+                        data: {'id': id},
+                        success: function (data) {
+                            switch (data.code) {
+                                case 0:
+                                    alert(data.message);
+                                    window.location.href="/Admin/show_admins";
+                                    break;
+                                case 1:
+                                    alert(data.message);
+                                    window.location.href="/Admin/show_admins";
+                                    break;
+                                case 2:
+                                    alert(data.message);
+                                    window.location.href="/Admin/show_admins";
+                                    break;
+                            }
+                        }
+                    });
                 }
             }
-
-            function encode() {
-                var data = $("#delete").serialize();//传数据
-                $.ajax({
-                    type : "POST",
-                    url : "delete_admins",
-                    dataType : "json",
-                    data : data,
-                    success : function (data) {
-                        if (data.code == 1) {
-                            alert(data.message);
-                            window.location = '/Admin/show_admins';
-                        }else{
-                            alert(data.message);
-                        }
-                    }
-                });
-            }
-            
     </script>
  
 </body>

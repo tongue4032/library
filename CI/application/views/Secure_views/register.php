@@ -94,7 +94,7 @@
     function checkPwd(){
         var password = document.getElementById("password").value.trim();
         if(!(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/).test(password)){
-            alert("Please enter the correct password format!");
+            alert("Password length is 6 or more digits and English!");
             document.getElementById("password").value="";
             return false;
         }

@@ -14,7 +14,7 @@
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/Admin/home">ONELibrary<img src="/common/images/logo.png"></a>
+                <a class="navbar-brand" href="/Secure/home">ONELibrary<img src="/common/images/logo.png"></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -27,9 +27,9 @@
                     </a>
                     <?php $user = $this->session->userdata('user'); ?>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="<?='/admin/admin_info'?>"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo $user['admin_name']; ?></a></li>
-                        <li><a href="/Admin/modifyAdmin"><i class="fa fa-cog fa-fw"></i>&nbsp;setting</a></li>
-                        <li><a href="<?='/admin/logout'?>"><i class="fa fa-reply fa-fw"></i>&nbsp;log out</a></li>
+                        <li><a href="/Profile/admin_info"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo $user['admin_name']; ?></a></li>
+                        <li><a href="/Profile/modifyAdmin"><i class="fa fa-cog fa-fw"></i>&nbsp;setting</a></li>
+                        <li><a href="/Secure/logout"><i class="fa fa-reply fa-fw"></i>&nbsp;log out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -40,16 +40,16 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                     <li>
-                        <a href="/Admin/Home"><i class="fa fa-home"></i> Home</a>
+                        <a href="/Secure/home"><i class="fa fa-home"></i> Home</a>
                     </li>
                     <li>
                         <a><i class="fa fa-book"></i> Books Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/show_books">Books</a>
+                                <a href="/Book/show_books">Books</a>
                             </li>
                             <li>
-                                <a href="/Admin/add_book">Add Books</a>
+                                <a href="/Book/add_book">Add Books</a>
                             </li>
                         </ul>
                     </li>
@@ -58,7 +58,7 @@
                         <a><i class="fa fa-group"></i> Users Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/show_users" class="active-menu">Users</a>
+                                <a href="/User/show_users" class="active-menu">Users</a>
                             </li>
                         </ul>
                     </li>
@@ -78,12 +78,12 @@
                         <a><i class="fa fa-hdd-o"></i> Rights Management<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/Admin/role_users" class="active-menu">Role Management</a>
+                                <a href="/Permissions/role_users" class="active-menu">Role Management</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="/Admin/admin_info"><i class="fa fa-info" style="margin-left: 4px;margin-right: 14px;"></i> Admin Info</a>
+                        <a href="/Profile/admin_info"><i class="fa fa-info" style="margin-left: 4px;margin-right: 14px;"></i> Admin Info</a>
                     </li>
                 </ul>
             </div>
@@ -100,7 +100,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="aa">
-                            <a href="/Admin/role_users">User Role</a><a>&nbsp;|&nbsp;</a><a href="/Admin/role_admins">Admin Role</a>
+                            <a href="/Permissions/role_users">User Role</a><a>&nbsp;|&nbsp;</a><a href="/Permissions/role_admins">Admin Role</a>
                         </div>
                         <div class="table-responsive">
                             <table width="900" border="1" cellpadding="0">
@@ -115,7 +115,7 @@
     								<td class="text-center"><?php echo $user['user_id'] ?></td>
     								<td class="text-center"><?php echo $user['username']?></td>
     								<td class="text-center"><?php echo $user['professional']?></td>
-    								<td class="text-center"><a href="<?='/Admin/role?user_id='.$user['user_id'] . '&username='.$user['username'] ?>"><span class="fa fa-edit"></span></a></td>
+    								<td class="text-center"><a href="<?='/Permissions/role?user_id='.$user['user_id'] . '&username='.$user['username'] ?>"><span class="fa fa-edit"></span></a></td>
     							</tr>
                                 <?php } ?>
 							</table>
